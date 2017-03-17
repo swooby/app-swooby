@@ -1,0 +1,53 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+
+        classpath 'com.android.tools.build:gradle:2.3.0'
+
+        /**
+         * Updates:
+         *  https://bintray.com/dcendents/gradle-plugins/com.github.dcendents%3Aandroid-maven-gradle-plugin
+         */
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5' // last checked 2017/03/14
+
+        /**
+         * Updates:
+         *  https://bintray.com/jfrog/jfrog-jars/gradle-bintray-plugin
+         */
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3' // last checked 2017/03/14
+    }
+}
+
+allprojects {
+    repositories {
+        maven {
+            url  "http://dl.bintray.com/smartfoo/maven"
+        }
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+/**
+ * Checks for project.LOCAL_DEVELOPMENT_BUILD and uses local only projects
+ *
+ * @return true if project.LOCAL_DEVELOPMENT_BUILD == true, else false
+ */
+def getIsLocalDevelopmentBuild() {
+    def isLocalDevelopmentBuild = project.hasProperty('LOCAL_DEVELOPMENT_BUILD') ? project.LOCAL_DEVELOPMENT_BUILD.toBoolean() : false
+    println 'getIsLocalDevelopmentBuild: isLocalDevelopmentBuild=' + isLocalDevelopmentBuild
+    return isLocalDevelopmentBuild
+}
+
+ext {
+    getIsLocalDevelopmentBuild = this.&getIsLocalDevelopmentBuild
+}
